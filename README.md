@@ -32,7 +32,18 @@ $ docker run --net host -e MSSQLPROXY_PROXIES="0.0.0.0:51433=sa:MyPassword100@lo
 ```
 Talk to the MSSQL server via the proxy with invalid credentials:
 ```shell script
-docker run --rm --net host -it mcr.microsoft.com/mssql-tools /opt/mssql-tools/bin/sqlcmd -S tcp:localhost,51433 -U sa -P wrong
+$ docker run --rm --net host -it mcr.microsoft.com/mssql-tools /opt/mssql-tools/bin/sqlcmd -S tcp:localhost,51433 -U sa -P wrong
+1> select @@version
+2> go
+                                                                                                                                                                                                                                                                                                            
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Microsoft SQL Server 2017 (RTM-CU8) (KB4338363) - 14.0.3029.16 (X64) 
+	Jun 13 2018 13:35:56 
+	Copyright (C) 2017 Microsoft Corporation
+	Developer Edition (64-bit) on Linux (Ubuntu 16.04.4 LTS)                                                                                                            
+
+(1 rows affected)
+1> exit
 ```
 
 # TODO
