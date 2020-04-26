@@ -1,0 +1,19 @@
+apply plugin: "java"
+
+dependencies {
+    implementation libProxyBase
+    implementation "com.microsoft.sqlserver:mssql-jdbc:8.2.2.jre8"
+    implementation 'org.slf4j:slf4j-api:1.7.29'
+    implementation('io.r2dbc:r2dbc-mssql:0.8.2.RELEASE') {
+        // ATTENTION: make sure this uses the same netty version as proxy base!
+        exclude group: "io.netty"
+    }
+    testImplementation "org.testcontainers:testcontainers:1.13.0"
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+}
+
+test {
+    testLogging {
+        showStandardStreams = true
+    }
+}

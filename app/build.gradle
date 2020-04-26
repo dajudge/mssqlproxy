@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'io.quarkus' version "1.3.1.Final"
+}
+
+buildNative {
+    enableHttpUrlHandler = true
+    enableHttpsUrlHandler = true
+    autoServiceLoaderRegistration = true
+    additionalBuildArgs = [
+            "-H:+ReportUnsupportedElementsAtRuntime",
+            "-H:+TraceClassInitialization",
+            "-H:+ReportExceptionStackTraces"
+    ]
+}
+
+dependencies {
+    implementation project(":core")
+    implementation libProxyBase
+
+    implementation enforcedPlatform("io.quarkus:quarkus-universe-bom:1.3.1.Final")
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-jackson'
+    implementation 'io.quarkus:quarkus-jsonp'
+    implementation 'io.quarkus:quarkus-logging-json'
+
+    implementation('io.r2dbc:r2dbc-mssql:0.8.2.RELEASE') {
+        // ATTENTION: make sure this uses the same netty version as proxy base!
+        exclude group: "io.netty"
+    }
+}

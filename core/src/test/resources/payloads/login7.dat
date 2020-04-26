@@ -1,0 +1,22 @@
+# Copyright 2020 The mssqlproxy developers (see CONTRIBUTORS)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+# username: sa
+# password: yourStrong(!)Password
+TgEAAAQAAHRAHwAAAAICCAAAAAAAAAAA4AMAGAAAAAAAAAAAXgAKAHIAAgB2ABUAoAAkAOgACQD6AAQA/gAZAAAAAAAwAQYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHMAdABvAGMAawBpAG4AZwBlAHIAcwBhADKlU6XypYKlkKXipYKlU6VDpdOlJ6W3pTeloKWzpZKlkqXSpVOlgqXjpU0AaQBjAHIAbwBzAG8AZgB0ACAASgBEAEIAQwAgAEQAcgBpAHYAZQByACAAZgBvAHIAIABTAFEATAAgAFMAZQByAHYAZQByAGwAbwBjAGEAbABoAG8AcwB0ADwBAABNAGkAYwByAG8AcwBvAGYAdAAgAEoARABCAEMAIABEAHIAaQB2AGUAcgAgADgALgAyAG0AYQBzAHQAZQByAAQBAAAAAQkBAAAAAQoAAAAA/w==
+
+# username: wrong
+# password: wrong
+NAEAAAQAAHRAHwAAAAICCAAAAAAAAAAA4AMAGAAAAAAAAAAAXgAKAHIABQB8AAUAhgAkAM4ACQDgAAQA5AAZAAAAAAAWAQYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHMAdABvAGMAawBpAG4AZwBlAHIAdwByAG8AbgBnANKlgqVTpUOl06VNAGkAYwByAG8AcwBvAGYAdAAgAEoARABCAEMAIABEAHIAaQB2AGUAcgAgAGYAbwByACAAUwBRAEwAIABTAGUAcgB2AGUAcgBsAG8AYwBhAGwAaABvAHMAdAAiAQAATQBpAGMAcgBvAHMAbwBmAHQAIABKAEQAQgBDACAARAByAGkAdgBlAHIAIAA4AC4AMgBtAGEAcwB0AGUAcgAEAQAAAAEJAQAAAAEKAAAAAP8=

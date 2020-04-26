@@ -1,0 +1,37 @@
+plugins {
+    id "com.github.hierynomus.license" version "0.15.0" apply false
+}
+
+ext {
+    proxyBaseVersion = "1587575484582-SNAPSHOT"
+    libProxyBase = "com.dajudge.proxybase:proxybase:${proxyBaseVersion}"
+}
+
+subprojects {
+    repositories {
+        maven { url "https://dl.bintray.com/dajudge/proxybase" }
+        mavenCentral()
+        mavenLocal()
+    }
+    tasks.withType(JavaCompile) {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+wrapper {
+    version "5.3.1"
+}
+
+allprojects {
+    apply plugin: 'com.github.hierynomus.license'
+    apply plugin: 'pmd'
+
+    pmd {
+        ruleSets = [project.rootProject.file("pmd.xml").absolutePath]
+    }
+
+    license {
+        header file("${project.rootDir}/HEADER")
+    }
+}
