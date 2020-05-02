@@ -15,7 +15,8 @@
  */
 package com.dajudge.mssqlproxy.core;
 
-import com.dajudge.mssqlproxy.core.ProxyApplication.ProxyServer;
+import com.dajudge.mssqlproxy.core.MssqlProxyApplication.ProxyConfig;
+import com.dajudge.proxybase.ProxyApplication;
 import com.dajudge.proxybase.config.Endpoint;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -25,7 +26,6 @@ import java.sql.SQLException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.dajudge.mssqlproxy.core.ProxyApplication.createProxy;
 import static com.dajudge.mssqlproxy.core.SqlServerContainer.SA_PASSWORD;
 import static com.dajudge.mssqlproxy.core.SqlServerContainer.SA_USERNAME;
 import static java.lang.String.join;
@@ -61,13 +61,16 @@ public class ProxyTest {
 
     private void withProxy(final Consumer<String> proxyConsumer) {
         withServer((host, port) -> {
-            try (final ProxyServer proxy = createProxy(
-                    new Endpoint("127.0.0.1", 0),
+            final ProxyApplication<?, ?, ?, ?> proxyApp = new MssqlProxyApplication(asList(new ProxyConfig(
+                    new Endpoint("127.0.0.1", 51433),
                     new Endpoint(host, port),
                     SA_USERNAME,
                     SA_PASSWORD
-            )) {
-                proxyConsumer.accept("127.0.0.1:" + proxy.port());
+            ))).start();
+            try {
+                proxyConsumer.accept("127.0.0.1:" + 51433);
+            } finally {
+                proxyApp.shutdown();
             }
         });
     }

@@ -19,19 +19,19 @@ public final class BinaryUtils {
     private BinaryUtils() {
     }
 
-    public static int readUnsignedByte(final byte data[], final int offset) {
+    public static int readUnsignedByte(final byte[] data, final int offset) {
         return data[offset] & 0xFF;
     }
 
-    public static void writeUnsignedByte(final byte data[], final int offset, final int value) {
+    public static void writeUnsignedByte(final byte[] data, final int offset, final int value) {
         data[offset] = (byte) (value & 0xFF);
     }
 
-    public static int readUnsignedShortBigEndian(final byte data[], final int offset) {
+    public static int readUnsignedShortBigEndian(final byte[] data, final int offset) {
         return ((data[offset] & 0xFF) << 8) | (data[offset + 1] & 0xFF);
     }
 
-    public static void writeUnsignedShortBigEndian(final byte data[], final int offset, final int value) {
+    public static void writeUnsignedShortBigEndian(final byte[] data, final int offset, final int value) {
         data[offset] = (byte) ((value >> 8) & 0xFF);
         data[offset + 1] = (byte) ((value) & 0xFF);
     }

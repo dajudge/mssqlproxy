@@ -26,9 +26,4 @@ public class LoginRequest extends ParsedRequest {
     public Login7Message parsed() {
         return new Login7Message(getMessage().payload().array());
     }
-
-    @Override
-    public void visit(final ParsedRequestVisitor visitor) {
-        visitor.onLoginRequest(this);
-    }
 }

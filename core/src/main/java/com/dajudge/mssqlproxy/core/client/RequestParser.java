@@ -22,8 +22,11 @@ import com.dajudge.mssqlproxy.core.client.requests.PreloginRequest;
 import com.dajudge.mssqlproxy.core.protocol.SqlServerMessage;
 import com.dajudge.proxybase.Sink;
 import io.netty.channel.ChannelFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RequestParser implements Sink<SqlServerMessage> {
+    private static final Logger LOG = LoggerFactory.getLogger(RequestParser.class);
     private static final byte PRE_LOGIN_REQUEST = 18;
     private static final byte LOGIN_REQUEST = 16;
     private final Sink<ParsedRequest> requestSink;
@@ -40,13 +43,13 @@ public class RequestParser implements Sink<SqlServerMessage> {
     @Override
     public void accept(final SqlServerMessage msg) {
         if (msg.parsedHeader().getMessageType() == PRE_LOGIN_REQUEST) {
-            System.out.println("PRELOGIN REQUEST");
+            LOG.debug("PRELOGIN REQUEST");
             requestSink.accept(new PreloginRequest(msg));
         } else if (msg.parsedHeader().getMessageType() == LOGIN_REQUEST) {
-            System.out.println("LOGIN REQUEST");
+            LOG.debug("LOGIN REQUEST");
             requestSink.accept(new LoginRequest(msg));
         } else {
-            System.out.println("GENERIC REQUEST");
+            LOG.debug("GENERIC REQUEST");
             requestSink.accept(new GenericRequest(msg));
         }
     }

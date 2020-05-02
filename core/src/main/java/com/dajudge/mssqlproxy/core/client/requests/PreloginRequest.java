@@ -27,11 +27,6 @@ public class PreloginRequest extends ParsedRequest {
         super(msg);
     }
 
-    @Override
-    public void visit(final ParsedRequestVisitor visitor) {
-        visitor.onPreloginRequest(this);
-    }
-
     public Map<Byte, OptionContainer> getOptions() {
         return parseOptions(getMessage().payload().array());
     }

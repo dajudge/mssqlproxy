@@ -21,9 +21,4 @@ public class GenericRequest extends ParsedRequest {
     public GenericRequest(final SqlServerMessage msg) {
         super(msg);
     }
-
-    @Override
-    public void visit(final ParsedRequestVisitor visitor) {
-        visitor.onGenericRequest(this);
-    }
 }

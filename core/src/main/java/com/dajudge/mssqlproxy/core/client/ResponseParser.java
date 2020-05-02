@@ -21,8 +21,11 @@ import com.dajudge.mssqlproxy.core.client.responses.PreloginResponse;
 import com.dajudge.mssqlproxy.core.protocol.SqlServerMessage;
 import com.dajudge.proxybase.Sink;
 import io.netty.channel.ChannelFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResponseParser implements Sink<SqlServerMessage> {
+    private static final Logger LOG = LoggerFactory.getLogger(ResponseParser.class);
     private final Sink<ParsedResponse> replySink;
     private boolean firstPreloginSeen = false;
 
@@ -38,11 +41,11 @@ public class ResponseParser implements Sink<SqlServerMessage> {
     @Override
     public void accept(final SqlServerMessage sqlServerMessage) {
         if (sqlServerMessage.parsedHeader().getMessageType() == 4 && !firstPreloginSeen) { // Prelogin response
-            System.out.println("PRELOGIN RESPONSE");
+            LOG.debug("PRELOGIN RESPONSE");
             replySink.accept(new PreloginResponse(sqlServerMessage));
             firstPreloginSeen = true;
         } else {
-            System.out.println("GENERIC RESPONSE");
+            LOG.debug("GENERIC RESPONSE");
             replySink.accept(new GenericResponse(sqlServerMessage));
         }
     }

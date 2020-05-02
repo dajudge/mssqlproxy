@@ -16,7 +16,6 @@
 package com.dajudge.mssqlproxy.core.client.requests;
 
 import com.dajudge.mssqlproxy.core.protocol.SqlServerMessage;
-import com.dajudge.mssqlproxy.core.protocol.transport.Login7Message;
 
 public abstract class ParsedRequest {
     private final SqlServerMessage msg;
@@ -27,15 +26,5 @@ public abstract class ParsedRequest {
 
     public SqlServerMessage getMessage() {
         return msg;
-    }
-
-    public abstract void visit(ParsedRequestVisitor visitor);
-
-    public interface ParsedRequestVisitor {
-        void onGenericRequest(GenericRequest genericRequest);
-
-        void onPreloginRequest(PreloginRequest preloginRequest);
-
-        void onLoginRequest(LoginRequest loginRequest);
     }
 }

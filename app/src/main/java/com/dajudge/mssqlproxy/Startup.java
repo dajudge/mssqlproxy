@@ -15,36 +15,34 @@
  */
 package com.dajudge.mssqlproxy;
 
-import com.dajudge.mssqlproxy.core.ProxyApplication;
-import com.dajudge.mssqlproxy.core.ProxyApplication.ProxyServer;
+import com.dajudge.mssqlproxy.core.MssqlProxyApplication;
+import com.dajudge.mssqlproxy.core.MssqlProxyApplication.ProxyConfig;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.event.Observes;
-import java.util.Collection;
+import java.util.List;
 
 import static com.dajudge.mssqlproxy.ConnectionsListParser.parseProxyConnections;
 import static java.util.stream.Collectors.toList;
 
 public class Startup {
     private static final Logger LOG = LoggerFactory.getLogger(Startup.class);
-    private Collection<ProxyServer> proxies;
+    private MssqlProxyApplication app;
 
     void onStart(@Observes StartupEvent ev) {
-        final String proxyDefintions = System.getenv("MSSQLPROXY_PROXIES");
-        if (proxyDefintions == null || proxyDefintions.trim().isEmpty()) {
-            throw new IllegalArgumentException("$MSSQLPROXY_PROXIES is empty");
-        }
-        proxies = parseProxyConnections(proxyDefintions).stream()
-                .map(this::createProxy)
-                .collect(toList());
+        app = new MssqlProxyApplication(getProxyConfigs());
     }
 
-    private ProxyServer createProxy(final ProxyConnectionInfo proxyConnectionInfo) {
+    void onStop(@Observes ShutdownEvent ev) {
+        app.shutdown();
+    }
+
+    private ProxyConfig createProxy(final ProxyConnectionInfo proxyConnectionInfo) {
         LOG.info("Creating proxy: {}", proxyConnectionInfo);
-        return ProxyApplication.createProxy(
+        return new ProxyConfig(
                 proxyConnectionInfo.getProxy(),
                 proxyConnectionInfo.getServer(),
                 proxyConnectionInfo.getUsername(),
@@ -52,7 +50,14 @@ public class Startup {
         );
     }
 
-    void onStop(@Observes ShutdownEvent ev) {
-        proxies.forEach(ProxyServer::close);
+    private List<ProxyConfig> getProxyConfigs() {
+        final String proxyDefintions = System.getenv("MSSQLPROXY_PROXIES");
+        if (proxyDefintions == null || proxyDefintions.trim().isEmpty()) {
+            throw new IllegalArgumentException("$MSSQLPROXY_PROXIES is empty");
+        }
+        return parseProxyConnections(proxyDefintions)
+                .stream()
+                .map(this::createProxy)
+                .collect(toList());
     }
 }

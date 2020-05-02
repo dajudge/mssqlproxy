@@ -16,5 +16,5 @@
 package com.dajudge.mssqlproxy.core.protocol.transport;
 
 public enum EncryptionLevel {
-    OFF, ON, NOT_SUPPORTED, REQUIRED;
+    OFF, ON, NOT_SUPPORTED, REQUIRED
 }
