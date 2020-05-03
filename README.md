@@ -6,7 +6,7 @@ You connect to the proxy with any username / password combination and the proxy 
 
 # Usage
 ```shell script
-$ docker run -p 1433:1433 -e MSSQLPROXY_PROXIES="0.0.0.0:1433=username:password@mssql-server:1433" -d dajudge/mssqlproxy:0.0.1
+$ docker run -p 1433:1433 -e MSSQLPROXY_PROXIES="0.0.0.0:1433=username:password@mssql-server:1433" -d dajudge/mssqlproxy:0.0.2
 ```
 
 `MSSQLPROXY_PROXIES` is a comma-separated list of proxy definitions where each proxy definition looks like this:
@@ -28,7 +28,7 @@ $ docker run -e ACCEPT_EULA=y -e SA_PASSWORD=MyPassword100 --net host -d mcr.mic
 ```
 Start a mssqlproxy on port `51433`:
 ```shell script
-$ docker run --net host -e MSSQLPROXY_PROXIES="0.0.0.0:51433=sa:MyPassword100@localhost:1433" -d dajudge/mssqlproxy:0.0.1
+$ docker run --net host -e MSSQLPROXY_PROXIES="0.0.0.0:51433=sa:MyPassword100@localhost:1433" -d dajudge/mssqlproxy:0.0.2
 ```
 Talk to the MSSQL server via the proxy with invalid credentials:
 ```shell script
