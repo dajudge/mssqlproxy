@@ -24,8 +24,10 @@ dependencies {
     implementation 'io.quarkus:quarkus-jsonp'
     implementation 'io.quarkus:quarkus-logging-json'
 
-    implementation('io.r2dbc:r2dbc-mssql:0.8.2.RELEASE') {
+    implementation('io.r2dbc:r2dbc-mssql:0.8.2.RELEASE') { // native compile needs this
         // ATTENTION: make sure this uses the same netty version as proxy base!
         exclude group: "io.netty"
     }
+
+    implementation 'org.apache.httpcomponents.client5:httpclient5:5.0-beta6' // native compile needs this
 }

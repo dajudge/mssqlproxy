@@ -17,6 +17,9 @@ package com.dajudge.mssqlproxy;
 
 import com.dajudge.mssqlproxy.core.MssqlProxyApplication;
 import com.dajudge.mssqlproxy.core.MssqlProxyApplication.ProxyConfig;
+import com.dajudge.mssqlproxy.core.client.requests.ParsedRequest;
+import com.dajudge.proxybase.ProxyApplication;
+import io.netty.buffer.ByteBuf;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.slf4j.Logger;
@@ -30,10 +33,10 @@ import static java.util.stream.Collectors.toList;
 
 public class Startup {
     private static final Logger LOG = LoggerFactory.getLogger(Startup.class);
-    private MssqlProxyApplication app;
+    private ProxyApplication<ByteBuf, ByteBuf, ByteBuf, ParsedRequest> app;
 
     void onStart(@Observes StartupEvent ev) {
-        app = new MssqlProxyApplication(getProxyConfigs());
+        app = new MssqlProxyApplication(getProxyConfigs()).start();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
