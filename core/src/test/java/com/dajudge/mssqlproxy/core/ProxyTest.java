@@ -36,7 +36,17 @@ import static org.junit.Assert.assertEquals;
 public class ProxyTest {
 
     @Test
-    public void can_establish_connection() {
+    public void can_connect_with_command_line_client() {
+        withProxy((host, port) -> {
+            try (final CmdlineClientContainer client = new CmdlineClientContainer()) {
+                client.start();
+                client.assertCanConnect(host, port, "wrong", "wrong");
+            }
+        });
+    }
+
+    @Test
+    public void can_connect_with_jdbc_client() {
         withConnection(c -> {
             try {
                 final String dbName = c.getMetaData().getDatabaseProductName();
@@ -50,8 +60,8 @@ public class ProxyTest {
 
 
     private void withConnection(final Consumer<Connection> connConsumer) {
-        withProxy(host -> {
-            try (final Connection connection = getConnection(jdbcUrl(host, "master", "wrong", "wrong"))) {
+        withProxy((host, port) -> {
+            try (final Connection connection = getConnection(jdbcUrl(host + ":" + port, "master", "wrong", "wrong"))) {
                 connConsumer.accept(connection);
             } catch (final SQLException e) {
                 throw new RuntimeException("Failed to connect to SQL server", e);
@@ -59,7 +69,7 @@ public class ProxyTest {
         });
     }
 
-    private void withProxy(final Consumer<String> proxyConsumer) {
+    private void withProxy(final BiConsumer<String, Integer> proxyConsumer) {
         withServer((host, port) -> {
             final ProxyApplication<?, ?, ?, ?> proxyApp = new MssqlProxyApplication(asList(new ProxyConfig(
                     new Endpoint("127.0.0.1", 51433),
@@ -68,7 +78,7 @@ public class ProxyTest {
                     SA_PASSWORD
             ))).start();
             try {
-                proxyConsumer.accept("127.0.0.1:" + 51433);
+                proxyConsumer.accept("127.0.0.1", 51433);
             } finally {
                 proxyApp.shutdown();
             }

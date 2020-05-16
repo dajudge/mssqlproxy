@@ -94,7 +94,7 @@ public class Login7Message {
         if (aeBlob.length > 0) {
             final int aeOffset = readInt(aeBlob, 0);
             LOG.info("AE offset: {}", aeOffset);
-            if(aeOffset > 0) { // FIXME workaround - read up actual semantics!
+            if (hasExtensions(optionFlags3)) {
                 int currentOffset = aeOffset;
                 while (payload[currentOffset] != -1) {
                     // https://github.com/microsoft/mssql-jdbc/blob/bfa3826038f675a75107f0723248130d25ca64c6/src/main/java/com/microsoft/sqlserver/jdbc/SQLServerConnection.java#L5103
@@ -113,6 +113,10 @@ public class Login7Message {
         }
     }
 
+    private boolean hasExtensions(final byte optionFlags3) {
+        return (optionFlags3 & (1 << 5)) > 0;
+    }
+
     public byte[] serialize() {
         final int blobsLen = hostname.length() * 2 +
                 username.length() * 2 +
@@ -127,9 +131,7 @@ public class Login7Message {
                 atchDbFile.length() * 2 +
                 passwordChange.length() * 2;
         final int baseLen = 86 + (tdsVersion >= YUKON ? 8 : 0);
-        final int extDataLen = 1 + (extensions.size() > 0
-                ? extensions.stream().map(Extension::length).reduce(0, Integer::sum)
-                : 0);
+        final int extDataLen = 1 + (hasExtensions(optionFlags3) ? calcExtensionsLength() : 0);
         final int len = baseLen + blobsLen + extDataLen;
         final byte[] payload = new byte[len];
         for (int i = 0; i < payload.length; i++) {
@@ -184,6 +186,10 @@ public class Login7Message {
             payload[extBlobOffset + extBlob.length] = -1;
         }
         return payload;
+    }
+
+    private Integer calcExtensionsLength() {
+        return extensions.stream().map(Extension::length).reduce(0, Integer::sum);
     }
 
     public int getTdsVersion() {
@@ -387,7 +393,7 @@ public class Login7Message {
     }
 
     private byte[] buildExtBlob() {
-        final int blobSize = extensions.stream().map(Extension::length).reduce(0, Integer::sum);
+        final int blobSize = calcExtensionsLength();
         final byte[] data = new byte[blobSize];
         int offset = 0;
         for (final Extension extension : extensions) {
